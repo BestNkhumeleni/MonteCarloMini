@@ -13,7 +13,7 @@ public class MonteCarloMinimizationParallel extends RecursiveTask<Found> {
    int rows, columns;
    int id = 0;
    Random rand = new Random();
-   int THRESHOLD = 1250;
+   int THRESHOLD = 2500;
 
    public MonteCarloMinimizationParallel(int length, TerrainArea terrain, int rows, int columns) {
       this.length = length;
@@ -23,22 +23,10 @@ public class MonteCarloMinimizationParallel extends RecursiveTask<Found> {
    }
 
    protected Found compute() {
-      int minHeight = Integer.MAX_VALUE;
       if (length <= THRESHOLD) {
-         for (int i = 0; i < THRESHOLD; i++) {
-            SearchParallel search = new SearchParallel(id++, rand.nextInt(rows), rand.nextInt(columns), terrain);
-            int x = search.find_valleys();
-            //System.out.println(x);
-            if (minHeight > x) {
-               minHeight = x;
-               System.out.println(x);
-            }
-            if (i == THRESHOLD - 2)
-               return new Found(search, minHeight);
-         }
-
-         return new Found(null, minHeight);
-
+         SearchParallel search = new SearchParallel(id++, rand.nextInt(rows), rand.nextInt(columns), terrain);
+         int minHeight = search.find_valleys();
+         return new Found(search, minHeight);
       } else {
          int newLength = (int) length / 2;
          MonteCarloMinimizationParallel left = new MonteCarloMinimizationParallel(newLength, terrain, rows, columns);
