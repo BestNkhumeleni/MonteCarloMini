@@ -24,9 +24,19 @@ public class MonteCarloMinimizationParallel extends RecursiveTask<Found> {
 
    protected Found compute() {
       if (length <= THRESHOLD) {
-         SearchParallel search = new SearchParallel(id++, rand.nextInt(rows), rand.nextInt(columns), terrain);
-         int minHeight = search.find_valleys();
-         return new Found(search, minHeight);
+         int minHeight = Integer.MAX_VALUE;
+         for (int i = 0; i < THRESHOLD; i++) {
+            SearchParallel search = new SearchParallel(id++, rand.nextInt(rows), rand.nextInt(columns), terrain);
+            int x = search.find_valleys();
+            if (minHeight > x) {
+               minHeight = x;
+            }
+            if (i == THRESHOLD - 1) {
+               return new Found(search, minHeight);
+            }
+         }
+         return new Found(null, Integer.MAX_VALUE);
+
       } else {
          int newLength = (int) length / 2;
          MonteCarloMinimizationParallel left = new MonteCarloMinimizationParallel(newLength, terrain, rows, columns);
