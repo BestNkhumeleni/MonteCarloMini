@@ -1,0 +1,9 @@
+Hope your having a wonderfull day:)
+
+to run this, run make while in the main directory, i.e. ParallelAssignment2024. this will compile all of the files in the src dir
+
+and then run java -cp ./bin MonteCarloMini.MonteCarloMinimizationParallel [arguments] in order to run the parrallel version
+
+or 
+
+you could rn "autorun.py" which will automatically compile the java files and run an example batch
