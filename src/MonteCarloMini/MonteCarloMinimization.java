@@ -101,7 +101,7 @@ class MonteCarloMinimization {
 		System.out.printf("Run parameters\n");
 		System.out.printf("\t Rows: %d, Columns: %d\n", rows, columns);
 		System.out.printf("\t x: [%f, %f], y: [%f, %f]\n", xmin, xmax, ymin, ymax);
-		System.out.printf("\t Search ParSearchParalleldensity: %f (%d searches)\n", searches_density, num_searches);
+		System.out.printf("\t Search density: %f (%d searches)\n", searches_density, num_searches);
 
 		/* Total computation time */
 		System.out.printf("Time: %d ms\n", endTime - startTime);
