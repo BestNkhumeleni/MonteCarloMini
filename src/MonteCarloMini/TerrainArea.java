@@ -2,6 +2,7 @@ package MonteCarloMini;
 
 import MonteCarloMini.SearchParallel.Direction;
 
+
 public class TerrainArea {
 
 	public static final int PRECISION = 10000;
