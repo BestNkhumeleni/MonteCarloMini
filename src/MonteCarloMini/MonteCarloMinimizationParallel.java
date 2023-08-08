@@ -27,26 +27,26 @@ public class MonteCarloMinimizationParallel extends RecursiveTask<Found> {
          int minHeight = Integer.MAX_VALUE;
          // THRESHOLD = THRESHOLD/2;
          for (int i = 0; i < THRESHOLD; i = i + 2) {
-            SearchParallel search = new SearchParallel(id++, rand.nextInt(rows), rand.nextInt(columns), terrain);
+            SearchParallel search = new SearchParallel(id++, rand.nextInt(rows), rand.nextInt(columns), terrain); //this creates as many new searches as the Threshold allows
             int x = search.find_valleys();
             if (minHeight > x) {
-               minHeight = x;
+               minHeight = x; //this updates the minimum value found so far.
             }
             if (i == THRESHOLD - 2) {
-               return new Found(search, minHeight);
+               return new Found(search, minHeight); //this returns the minimum value we found along side its search instance.
             }
          }
-         return new Found(null, Integer.MAX_VALUE);
+         return new Found(null, Integer.MAX_VALUE);// this wont run its just here to prevent the function from thinking we have no return statement
 
       } else {
-         int newLength = (int) length / 2;
-         MonteCarloMinimizationParallel left = new MonteCarloMinimizationParallel(newLength, terrain, rows, columns);
+         int newLength = (int) length / 2; // this splits the number of seaches we need by 2 until we are below the setpoint
+         MonteCarloMinimizationParallel left = new MonteCarloMinimizationParallel(newLength, terrain, rows, columns); // each search is then provided to a right and a left thread
          MonteCarloMinimizationParallel right = new MonteCarloMinimizationParallel(length - newLength, terrain, rows,
                columns);
          left.fork();
          Found rightResult = right.compute();
          Found leftResult = left.join();
-         if (leftResult.minimum <= rightResult.minimum) {
+         if (leftResult.minimum <= rightResult.minimum) { //this compares the results we get from both threads and chooses the smallest one
             return leftResult;
          } else {
             return rightResult;
@@ -69,8 +69,8 @@ public class MonteCarloMinimizationParallel extends RecursiveTask<Found> {
       double searches_density; // Density - number of Monte Carlo searches per grid position - usually less
                                // than 1!
       int num_searches; // Number of searches
-      Random rand = new Random(); // the random number generator
-      if (args.length != 7) {
+      
+      if (args.length != 7) { //checks if we have the correct number of arguments
          System.out.println("Incorrect number of command line arguments provided.");
          if (args.length < 7) {
             System.out.println("add " + (7 - args.length) + "more argument(s)");
@@ -90,10 +90,9 @@ public class MonteCarloMinimizationParallel extends RecursiveTask<Found> {
       terrain = new TerrainArea(rows, columns, xmin, xmax, ymin, ymax);
       num_searches = (int) (rows * columns * searches_density);
 
-      tick();
+      tick(); //clock starts right before any threads are invoked and any search is initiated.
       MonteCarloMinimizationParallel first = new MonteCarloMinimizationParallel(num_searches, terrain, rows, columns);
       ForkJoinPool pool = new ForkJoinPool(); // the pool of worker threads
-
       Found result = pool.invoke(first); // start everything running - give the task to the pool
       tock();
 
@@ -121,7 +120,7 @@ public class MonteCarloMinimizationParallel extends RecursiveTask<Found> {
    }
 }
 
-class Found {
+class Found { //this class is created to house the minimum value we find along side its search instance
    SearchParallel location;
    int minimum;
 
